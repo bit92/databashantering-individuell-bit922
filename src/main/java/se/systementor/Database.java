@@ -5,25 +5,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Database {
-    String url = "jdbc:mysql://localhost:3306/northwind";
+    String url = "jdbc:mysql://localhost:3306/projectdb";
     String user = "root";
-    String password = "hejsan123";
+    String password = "Bks1992?????";
 
 
     protected Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url,user,password);
     }
 
-    public List<String> activeProducts(){
-        ArrayList<String> products = new ArrayList<String>();
+    public List<Product> activeProducts(){
+        List<Product> products = new ArrayList<Product>();
 
         try {
             Connection conn = getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT ProductName FROM Products WHERE discontinued=0");
+            ResultSet rs = stmt.executeQuery("select * from products");
 
             while (rs.next()) {
-                products.add(rs.getString("ProductName"));
+                //objects
+                Product product = new Product();
+                product.setProductName(rs.getString("productName"));
+                product.setPrice(rs.getDouble("price"));
+                products.add(product);
+
             }
 
             rs.close();
